@@ -1,0 +1,29 @@
+[
+  {
+    "order_id": "ORD1001",
+    "customer_name": "Asha Rao",
+    "email": "asha@example.com",
+    "product": "Wireless Headphones (Black)",
+    "quantity": 1,
+    "status": "Delivered",
+    "estimated_delivery": "2026-10-20"
+  },
+  {
+    "order_id": "ORD1002",
+    "customer_name": "Ravi Kumar",
+    "email": "ravi@example.com",
+    "product": "Smart Watch Series 4",
+    "quantity": 1,
+    "status": "Shipped",
+    "estimated_delivery": "2026-11-02"
+  },
+  {
+    "order_id": "ORD1003",
+    "customer_name": "Meera Iyer",
+    "email": "meera@example.com",
+    "product": "Laptop Stand",
+    "quantity": 2,
+    "status": "Processing",
+    "estimated_delivery": "2026-11-06"
+  }
+]
