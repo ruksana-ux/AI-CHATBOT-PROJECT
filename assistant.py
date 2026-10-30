@@ -201,3 +201,4 @@ class CustomerSupportAssistant:
             return self._rule_based_fallback(user_message, history, order_id, email)
 
         return self._rule_based_fallback(user_message, history, order_id, email)
+
