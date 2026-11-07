@@ -1,5 +1,10 @@
 # AI Customer Support Assistant
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-chatbot-project-s9b7mct9njjszjpazbacg9.streamlit.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-ruksana--ux%2FAI--CHATBOT--PROJECT-blue?logo=github)](https://github.com/ruksana-ux/AI-CHATBOT-PROJECT)
+
+> 🌐 **Live Demo**: [https://ai-chatbot-project-s9b7mct9njjszjpazbacg9.streamlit.app/](https://ai-chatbot-project-s9b7mct9njjszjpazbacg9.streamlit.app/)
+
 A production-ready AI Customer Support Chatbot built strictly following the guidelines without any third-party orchestration frameworks like LangChain. The assistant uses **Ollama** or **Hugging Face Transformers** for model inference, grounds policy answers strictly on company FAQs, and securely validates customer identity before releasing order information.
 
 ---
@@ -54,8 +59,8 @@ A production-ready AI Customer Support Chatbot built strictly following the guid
 
 ### 1. Clone or Open the Repository
 ```bash
-git clone https://github.com/<your-username>/ai-customer-support-assistant.git
-cd ai-customer-support-assistant
+git clone https://github.com/ruksana-ux/AI-CHATBOT-PROJECT.git
+cd AI-CHATBOT-PROJECT
 ```
 
 ### 2. Create and Activate a Virtual Environment
