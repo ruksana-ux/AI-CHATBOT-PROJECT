@@ -1,6 +1,7 @@
 # AI Customer Support Assistant
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-chatbot-project-s9b7mct9njjszjpazbacg9.streamlit.app/)
+[![CI Tests](https://github.com/ruksana-ux/AI-CHATBOT-PROJECT/actions/workflows/tests.yml/badge.svg)](https://github.com/ruksana-ux/AI-CHATBOT-PROJECT/actions/workflows/tests.yml)
 [![GitHub](https://img.shields.io/badge/GitHub-ruksana--ux%2FAI--CHATBOT--PROJECT-blue?logo=github)](https://github.com/ruksana-ux/AI-CHATBOT-PROJECT)
 
 > 🌐 **Live Demo**: [https://ai-chatbot-project-s9b7mct9njjszjpazbacg9.streamlit.app/](https://ai-chatbot-project-s9b7mct9njjszjpazbacg9.streamlit.app/)

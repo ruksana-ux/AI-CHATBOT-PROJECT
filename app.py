@@ -104,9 +104,25 @@ with st.sidebar:
     with st.expander("Sample Customer Orders"):
         st.json(load_orders())
 
-    if st.button("🔄 Reset Conversation"):
-        st.session_state.messages = []
-        st.rerun()
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🔄 Reset", use_container_width=True):
+            st.session_state.messages = []
+            st.rerun()
+
+    with col2:
+        transcript_lines = []
+        for msg in st.session_state.get("messages", []):
+            label = "Customer" if msg["role"] == "user" else "Assistant"
+            transcript_lines.append(f"{label}:\n{msg['content']}\n")
+        transcript_text = "\n".join(transcript_lines)
+        st.download_button(
+            label="📥 Export Chat",
+            data=transcript_text,
+            file_name="support_chat_transcript.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
 
 # Main Chat Interface
 st.markdown('<div class="support-header">🤖 AI Customer Support Assistant</div>', unsafe_allow_html=True)
