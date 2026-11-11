@@ -30,6 +30,7 @@
     "order_id": "ORD1004",
     "customer_name": "Alice Smith",
     "status": "Shipped",
+    "email": "alicesmith@example.com",
     "quantity": 2,
     "estimated_delivery": "2023-10-28",
     "products": [
@@ -41,6 +42,7 @@
     "order_id": "ORD1005",
     "customer_name": "Bob Jones",
     "status": "Processing",
+    "email": "bobjones@example.com",
     "quantity": 4,
     "estimated_delivery": "2023-11-01",
     "products": [
@@ -51,6 +53,7 @@
     "order_id": "ORD1006",
     "customer_name": "Charlie Brown",
     "status": "Delivered",
+    "email": "charliebrown@example.com",
     "estimated_delivery": "2023-10-24",
     "products": [
       "Ergonomic Mouse"
