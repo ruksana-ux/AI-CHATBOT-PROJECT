@@ -134,6 +134,20 @@ Open your browser at `http://localhost:8501`. You can toggle model settings, vie
 python cli.py
 ```
 
+### REST API (FastAPI with Image/Video Support)
+```bash
+uvicorn main:app --reload
+```
+Open your browser at `http://127.0.0.1:8000/docs` to test the interactive API docs.
+- **Endpoint**: `POST /chat`
+- **Request Body**:
+  ```json
+  {
+    "message": "My item arrived damaged, please review",
+    "media_urls": ["https://example.com/damaged_product.jpg"]
+  }
+  ```
+
 ---
 
 ## 🧪 Running Automated Tests

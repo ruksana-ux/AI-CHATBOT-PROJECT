@@ -7,7 +7,7 @@ Uses Ollama or Hugging Face Transformers. No LangChain.
 """
 import re
 import json
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 from tools import load_faqs, check_order_status
 from llm_engine import get_llm, OllamaModel, HuggingFaceTransformersModel
 
@@ -149,13 +149,38 @@ class CustomerSupportAssistant:
 
         return "Could you please clarify your question? Let me know if you need help with shipping, returns, refunds, product policies, or checking an order status."
 
-    def process_message(self, user_message: str, history: List[Dict[str, str]]) -> str:
+    def respond(self, user_input: str, media_urls: Optional[List[str]] = None, history: Optional[List[Dict[str, str]]] = None) -> Dict[str, Any]:
+        """
+        Respond to customer query and optional media attachments (images/videos).
+        Returns a structured dictionary response for APIs.
+        """
+        # 1. First, check if there is an image/video attached
+        if media_urls:
+            # Handle media processing (e.g., save to a database, or analyze using a Vision model)
+            return {
+                "type": "media_received",
+                "message": f"Thank you for sharing the media file(s). Our support team has received the {len(media_urls)} attachment(s) and is reviewing your request."
+            }
+
+        # 2. Existing text processing flows
+        history = history or []
+        answer = self.process_message(user_input, history)
+        return {
+            "type": "text_response",
+            "message": answer
+        }
+
+    def process_message(self, user_message: str, history: List[Dict[str, str]], media_urls: Optional[List[str]] = None) -> str:
         """
         Main query processing method:
-        1. Checks order status verification logic (calls Python function if validated).
-        2. Injects FAQ and context into LLM.
-        3. Returns LLM response or graceful fallback.
+        1. Checks for media attachments (e.g., images of damaged products).
+        2. Checks order status verification logic (calls Python function if validated).
+        3. Injects FAQ and context into LLM.
+        4. Returns LLM response or graceful fallback.
         """
+        if media_urls:
+            return f"Thank you for sharing the media file(s). Our support team has received the {len(media_urls)} attachment(s) and is reviewing your request."
+
         order_id, email = self.find_order_details_in_history(history, user_message)
 
         # Check if this is an order status check request

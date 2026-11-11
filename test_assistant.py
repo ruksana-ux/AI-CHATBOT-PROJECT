@@ -87,9 +87,25 @@ def test_multi_turn_order_verification_flow():
     print("[PASS] test_multi_turn_order_verification_flow")
 
 
+def test_media_support():
+    assistant = CustomerSupportAssistant()
+    # Test respond with media_urls
+    res = assistant.respond("My item arrived damaged", media_urls=["https://example.com/damaged.jpg"])
+    assert res["type"] == "media_received"
+    assert "1 attachment" in res["message"]
+
+    # Test respond with plain text
+    res_text = assistant.respond("What is your return policy?")
+    assert res_text["type"] == "text_response"
+    assert "30 days" in res_text["message"] or "return" in res_text["message"].lower()
+
+    print("[PASS] test_media_support")
+
+
 if __name__ == "__main__":
     test_faq_loading()
     test_order_status_checker()
     test_customer_query_and_faq_grounding()
     test_multi_turn_order_verification_flow()
+    test_media_support()
     print("\nALL TESTS PASSED SUCCESSFULLY!")

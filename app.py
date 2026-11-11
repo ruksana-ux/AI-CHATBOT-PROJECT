@@ -183,18 +183,35 @@ if len(st.session_state.messages) <= 1:
             st.session_state.messages.append({"role": "assistant", "content": reply})
             st.rerun()
 
+# Optional Media Attachment for product quality issues
+with st.expander("📎 Attach image/video (e.g. for product quality or damage verification)"):
+    uploaded_files = st.file_uploader(
+        "Upload photos/videos of the product:",
+        type=["png", "jpg", "jpeg", "webp", "mp4", "mov"],
+        accept_multiple_files=True,
+        help="Upload clear photos of damaged items for quality review."
+    )
+
 # User Input
 if prompt := st.chat_input("Type your question here (e.g. 'Where is order ORD1002?')..."):
+    media_list = [f.name for f in (uploaded_files or [])]
+
     # Add user message to history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    user_display = prompt
+    if media_list:
+        user_display += f"\n\n*📎 Attached {len(media_list)} file(s): {', '.join(media_list)}*"
+
+    st.session_state.messages.append({"role": "user", "content": user_display})
     with st.chat_message("user"):
-        st.markdown(prompt)
+        st.markdown(user_display)
 
     # Process through assistant with session history
     with st.chat_message("assistant"):
         with st.spinner("Assistant is thinking..."):
             history_for_turn = st.session_state.messages[:-1]
-            response = st.session_state.assistant.process_message(prompt, history_for_turn)
+            response = st.session_state.assistant.process_message(
+                prompt, history_for_turn, media_urls=media_list if media_list else None
+            )
             st.markdown(response)
 
     st.session_state.messages.append({"role": "assistant", "content": response})

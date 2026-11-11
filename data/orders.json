@@ -25,6 +25,35 @@
     "quantity": 2,
     "status": "Processing",
     "estimated_delivery": "2026-11-06"
+  },
+  {
+    "order_id": "ORD1004",
+    "customer_name": "Alice Smith",
+    "status": "Shipped",
+    "quantity": 2,
+    "estimated_delivery": "2023-10-28",
+    "products": [
+      "Wireless Headphones",
+      "USB-C Cable"
+    ]
+  },
+  {
+    "order_id": "ORD1005",
+    "customer_name": "Bob Jones",
+    "status": "Processing",
+    "quantity": 4,
+    "estimated_delivery": "2023-11-01",
+    "products": [
+      "Mechanical Keyboard"
+    ]
+  },
+  {
+    "order_id": "ORD1006",
+    "customer_name": "Charlie Brown",
+    "status": "Delivered",
+    "estimated_delivery": "2023-10-24",
+    "products": [
+      "Ergonomic Mouse"
+    ]
   }
 ]
-

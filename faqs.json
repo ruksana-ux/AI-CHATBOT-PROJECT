@@ -28,5 +28,25 @@
     "category": "product policies",
     "question": "Can I cancel an order?",
     "answer": "Orders can be cancelled before they are shipped. Once shipped, please use the return process."
+  },
+  {
+    "Category": "Product quality",
+    "question": "how can i return my product",
+    "answer": "you can return the product with in 10 days of delivery.Just go to delivery page click on return the product. select option quality issues "
+  },
+  {
+    "Category": "refund",
+    "question": "when will i get refund for the product which was returned on the same day of delivery",
+    "answer": "please share the order details and you will be notified within in 24 hours after checking the issue."
+  },
+  {
+    "Category": "warranty",
+    "question": "Do your products have a warranty?",
+    "answer": "All our electronic products come with a 1-year limited warranty covering manufacturing defects."
+  },
+  {
+    "category": "product quality",
+    "question": "My item arrived damaged. What is the process to resolve this?",
+    "answer": "We apologize for the inconvenience! For items that arrived damaged, please share a clear image of the product showing the damage to our support team so we can verify the issue and immediately dispatch a replacement or issue a refund."
   }
 ]
