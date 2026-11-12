@@ -106,10 +106,11 @@ class CustomerSupportAssistant:
             # Both provided: call Python function
             result = check_order_status(order_id, email)
             if result.get("success"):
+                product_label = "Product(s)" if result.get("products") and len(result.get("products")) > 1 else "Product"
                 return (
                     f"Here are the details for your order **{result['order_id']}**:\n"
                     f"- **Customer**: {result['customer_name']}\n"
-                    f"- **Product**: {result['product']} (Qty: {result['quantity']})\n"
+                    f"- **{product_label}**: {result['product']} (Qty: {result['quantity']})\n"
                     f"- **Status**: {result['status']}\n"
                     f"- **Estimated Delivery**: {result['estimated_delivery']}\n\n"
                     "Please let me know if you need anything else!"
@@ -117,26 +118,25 @@ class CustomerSupportAssistant:
             else:
                 return f"Verification notice: {result.get('error', 'Could not verify order details.')} Please double-check your order number and email."
 
-        # Check FAQs
+        # Check FAQs: exact question or high keyword overlap
         faqs = load_faqs()
+        stop_words = {"what", "is", "your", "how", "do", "you", "the", "can", "i", "for", "a", "an", "to", "my", "of", "in", "when", "will", "on"}
+        user_words = set(re.findall(r'[a-z0-9]+', lower)) - stop_words
+
+        best_match = None
+        best_score = 0
         for item in faqs:
-            q_keywords = [w for w in item["question"].lower().replace("?", "").split() if len(w) > 3]
-            match_count = sum(1 for w in q_keywords if w in lower)
-            if match_count >= 2 or item["category"] in lower:
-                # If specific category matches
-                if "shipping" in lower and item["category"] == "shipping":
-                    if "international" in lower and "international" in item["question"].lower():
-                        return item["answer"]
-                    if "how long" in lower or "time" in lower or "take" in lower:
-                        return item["answer"]
-                elif "return" in lower and item["category"] == "returns":
-                    return item["answer"]
-                elif "refund" in lower and item["category"] == "refunds":
-                    return item["answer"]
-                elif "warranty" in lower and "warranty" in item["question"].lower():
-                    return item["answer"]
-                elif "cancel" in lower and "cancel" in item["question"].lower():
-                    return item["answer"]
+            q_lower = item["question"].lower()
+            if q_lower in lower or lower in q_lower:
+                return item["answer"]
+            q_words = set(re.findall(r'[a-z0-9]+', q_lower)) - stop_words
+            overlap = len(user_words & q_words)
+            if overlap > best_score:
+                best_score = overlap
+                best_match = item
+
+        if best_match and best_score >= 2:
+            return best_match["answer"]
 
         # Ambiguous query check
         if len(lower.split()) <= 3 or lower in ["help", "hello", "hi", "support", "issue"]:

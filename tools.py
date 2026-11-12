@@ -7,10 +7,10 @@ DATA_DIR = BASE_DIR / "data"
 
 
 def _get_file_path(filename: str) -> Path:
-    """Find file in data/ or root directory."""
-    if (DATA_DIR / filename).exists():
-        return DATA_DIR / filename
-    return BASE_DIR / filename
+    """Find file in root directory or data/."""
+    if (BASE_DIR / filename).exists():
+        return BASE_DIR / filename
+    return DATA_DIR / filename
 
 
 def load_faqs() -> list[dict]:
@@ -56,11 +56,21 @@ def check_order_status(order_id: str, email: str) -> dict:
                     "success": False,
                     "error": "Customer identity verification failed. The provided email does not match our records for this order."
                 }
+            # Support both singular 'product' and plural 'products' list
+            product_val = order.get("product")
+            products_list = order.get("products")
+            if not product_val and products_list:
+                if isinstance(products_list, list):
+                    product_val = ", ".join(products_list)
+                else:
+                    product_val = str(products_list)
+
             return {
                 "success": True,
                 "order_id": order["order_id"],
                 "customer_name": order.get("customer_name"),
-                "product": order.get("product"),
+                "product": product_val,
+                "products": products_list or ([product_val] if product_val else []),
                 "quantity": order.get("quantity"),
                 "status": order.get("status"),
                 "estimated_delivery": order.get("estimated_delivery"),
