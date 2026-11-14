@@ -154,19 +154,10 @@ class CustomerSupportAssistant:
         Respond to customer query and optional media attachments (images/videos).
         Returns a structured dictionary response for APIs.
         """
-        # 1. First, check if there is an image/video attached
-        if media_urls:
-            # Handle media processing (e.g., save to a database, or analyze using a Vision model)
-            return {
-                "type": "media_received",
-                "message": f"Thank you for sharing the media file(s). Our support team has received the {len(media_urls)} attachment(s) and is reviewing your request."
-            }
-
-        # 2. Existing text processing flows
         history = history or []
-        answer = self.process_message(user_input, history)
+        answer = self.process_message(user_input, history, media_urls=media_urls)
         return {
-            "type": "text_response",
+            "type": "media_received" if media_urls else "text_response",
             "message": answer
         }
 
@@ -178,8 +169,14 @@ class CustomerSupportAssistant:
         3. Injects FAQ and context into LLM.
         4. Returns LLM response or graceful fallback.
         """
+        media_ack = ""
         if media_urls:
-            return f"Thank you for sharing the media file(s). Our support team has received the {len(media_urls)} attachment(s) and is reviewing your request."
+            media_ack = f"Thank you for sharing the media file(s). Our support team has received the {len(media_urls)} attachment(s) and is reviewing your request.\n\n"
+
+        # If user only uploaded media without a question text
+        clean_text = (user_message or "").strip().lower()
+        if not clean_text or clean_text in {"attachment", "upload", "photo", "image", "video"}:
+            return media_ack.strip()
 
         order_id, email = self.find_order_details_in_history(history, user_message)
 
@@ -190,9 +187,9 @@ class CustomerSupportAssistant:
         if is_order_intent:
             if order_id and not email:
                 # Identity not verified yet - must ask for customer identity
-                return f"I can help you check the status of order {order_id}! To verify your identity and protect your privacy, could you please provide the email address used when placing this order?"
+                return media_ack + f"I can help you check the status of order {order_id}! To verify your identity and protect your privacy, could you please provide the email address used when placing this order?"
             elif not order_id and email:
-                return f"Thank you for providing your email ({email}). Could you please share your order number (e.g., ORD1002) so I can look up your order details?"
+                return media_ack + f"Thank you for providing your email ({email}). Could you please share your order number (e.g., ORD1002) so I can look up your order details?"
             elif order_id and email:
                 # Both present -> execute the Python tool
                 tool_data = check_order_status(order_id, email)
@@ -218,12 +215,14 @@ class CustomerSupportAssistant:
         try:
             response = self.llm.generate(messages)
             if response and response.strip():
-                return response.strip()
+                return media_ack + response.strip()
         except Exception as e:
             # If the selected local model or inference endpoint is not running/available,
             # execute rule-grounded fallback to ensure uninterrupted operation.
             print(f"[Assistant] LLM generation note: {e}")
-            return self._rule_based_fallback(user_message, history, order_id, email)
+            fallback_text = self._rule_based_fallback(user_message, history, order_id, email)
+            return media_ack + fallback_text
 
-        return self._rule_based_fallback(user_message, history, order_id, email)
+        fallback_text = self._rule_based_fallback(user_message, history, order_id, email)
+        return media_ack + fallback_text
 
